@@ -1,0 +1,76 @@
+import ctypes
+ctypes.windll.user32.SetProcessDPIAware()
+
+import pygame, sys, Global
+
+pygame.init()
+screen = pygame.display.set_mode((Global.screenWidth, Global.screenHeight))
+Global.screen = screen
+clock = pygame.time.Clock()
+
+from Services.mapService import createMap
+# cols=20, 
+#     rows=15, 
+#     offset=2, 
+#     color=(100, 100, 100, 255),
+#     hiddenColor=(70, 70, 70, 255),
+#     revealColor=(200, 200, 200, 255),
+#     bombColor=(255,50,50,255),
+#     flagColor=(220,220,0),
+#     mapPos=(800, 50),
+#     tileSize=(50, 50),
+#     bombCount=150,
+currentMap = createMap(
+    cols=20,
+    rows=15,
+    offset=2,
+    color=(100,100,100,255),
+    hiddenColor=(50,50,50,255),
+    revealColor=(200,200,200,255),
+    bombColor=(255,50,50,255),
+    flagColor=(220,220,0),
+    mapPos=(800,50),
+    tileSize=(50,50),
+    bombCount=100
+)
+
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        currentMap.handleClick(event)
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                mouse_pos = pygame.mouse.get_pos()
+                for tile in currentMap.tilesGroup:
+                    if tile.rect.collidepoint(mouse_pos):
+                        currentMap.mapDestroy(tile.index,4,"circle")
+                        break
+            if event.key == pygame.K_w:
+                mouse_pos = pygame.mouse.get_pos()
+                for tile in currentMap.tilesGroup:
+                    if tile.rect.collidepoint(mouse_pos):
+                        currentMap.mapHidden(tile.index,4,"circle")
+                        break
+            if event.key == pygame.K_z:
+                currentMap = createMap(
+                    cols=20,
+                    rows=15,
+                    offset=2,
+                    color=(100,100,100,255),
+                    hiddenColor=(50,50,50,255),
+                    revealColor=(200,200,200,255),
+                    bombColor=(255,50,50,255),
+                    flagColor=(220,220,0),
+                    mapPos=(800,50),
+                    tileSize=(50,50),
+                    bombCount=100
+                )
+    screen.fill("white")
+
+    currentMap.update()
+
+    pygame.display.flip()
+    Global.dt = clock.tick(144) / 1000
