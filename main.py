@@ -19,7 +19,7 @@ from Services.mapService import createMap
 #     flagColor=(220,220,0),
 #     mapPos=(800, 50),
 #     tileSize=(50, 50),
-#     bombCount=150,
+#     bombCount=150,hm
 currentMap = createMap(
     cols=20,
     rows=15,
