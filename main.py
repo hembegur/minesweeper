@@ -18,7 +18,7 @@ currentMap = createMap(
     revealColor=(200,200,200,255),
     bombColor=(255,50,50,255),
     flagColor=(220,220,0),
-    mapPos=(25,25),#(800,50),
+    mapPos=(800,50),
     tileSize=(50,50),
     bombCount=50
 )

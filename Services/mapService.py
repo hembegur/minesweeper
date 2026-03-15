@@ -164,7 +164,7 @@ class createMap:
         self.calculateNumbers()
 
     def tileReveal(self, currentTile: Tile, first: bool):
-        if (currentTile.isBomb) and first:
+        if (currentTile.isBomb) and first and not currentTile.flagged:
             currentTile.revealed = True
             currentTile.changeColor(self.bombColor)
             return
@@ -195,7 +195,8 @@ class createMap:
         for dx in (-1,0,1):
             for dy in (-1,0,1):
                 if (dx or dy) and 0 <= x+dx < self.rows and 0 <= y+dy < self.cols:
-                    if self.tilesArray[x+dx][y+dy].flagged:
+                    chosenTile: Tile = self.tilesArray[x+dx][y+dy]
+                    if chosenTile.flagged or (chosenTile.isBomb and chosenTile.revealed):
                         flagCount += 1
         if flagCount >= currentTile.bombCount:
             for dx in (-1,0,1):
@@ -211,10 +212,9 @@ class createMap:
                     if self.firstClick:
                         self.firstClick = False
                         self.generateBomb(tile)
-
-                    self.tileReveal(tile, True)
                     if tile.revealed:
                         self.quickTileReveal(tile)
+                    self.tileReveal(tile, True)
                     break
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
