@@ -50,8 +50,8 @@ class createMap:
             revealColor: RGBA,
             bombColor: RGBA,
             flagColor: RGBA,
-            tileSize: pygame.Vector2 = (50, 50),
-            mapPos: pygame.Vector2 = (0, 0),
+            tileSize: pygame.Vector2 = pygame.Vector2(50, 50),
+            mapPos: pygame.Vector2 = pygame.Vector2(0, 0),
             bombCount: int = 10,
         ):
         self.rows = rows
@@ -79,7 +79,7 @@ class createMap:
                 
                 tile = Tile(
                     width=tileSizeX, 
-                    height=tileSizeY, 
+                    height=tileSizeY,
                     pos=pygame.Vector2(tile_x, tile_y), 
                     index=pygame.Vector2(row, col),
                     color=color
