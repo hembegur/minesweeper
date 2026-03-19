@@ -4,6 +4,7 @@ screen = pygame.display.set_mode((Global.screenWidth, Global.screenHeight), pyga
 Global.screen = screen
 clock = pygame.time.Clock()
 
+from Utils.UiComponents.TextLabel import TextLabel
 from Classes.Attacks.Spike import spawnSpike
 from Utils.Game.Hitbox import Hitbox
 hitbox = Hitbox()
@@ -30,12 +31,29 @@ Global.minesweeperSurface = minesweeperSurface
 Global.minesweeperRect = minesweeperRect
 
 mouseHB = hitbox.new(
-    pos=pygame.Vector2(0,0),
+    pos=pygame.Vector2(pygame.mouse.get_pos()),
     visualize=True,
     size=pygame.Vector2(25,25),
     lifetime=None,
     hitFunction=None,
     owner=pygame.mouse,
+)
+
+playerHPText = TextLabel(
+    text=f"HP: {Global.playerHP} / {Global.playerMaxHP}",
+    pos=pygame.Vector2(100,100),
+    font_size=30,
+    color=(0,200,0),
+    font_name="Assets/Fonts/Minecraft.ttf", 
+    center=False,
+)
+playerMPText = TextLabel(
+    text=f"MP: {Global.playerMP} / {Global.playerMaxMP}",
+    pos=pygame.Vector2(100,150),
+    font_size=30,
+    color=(0,0,200),
+    font_name="Assets/Fonts/Minecraft.ttf", 
+    center=False,
 )
 
 while True:
@@ -74,19 +92,23 @@ while True:
                 )
             if event.key == pygame.K_e:
                 spawnSpike()
-                
 
-    mouseHB.position = pygame.Vector2(pygame.mouse.get_pos())
     screen.fill("white")
-   
     currentMap.update()
+    mouseHB.pos = pygame.Vector2(pygame.mouse.get_pos())
     hitbox.update(screen)
     screen.blit(minesweeperSurface, minesweeperRect)
-    minesweeperSurface.fill((200, 200, 200, 0))
+    minesweeperSurface.fill((200, 200, 200,0))
     Global.attackGroup.update()
     Global.attackGroup.draw(minesweeperSurface)
     Global.particleGroup.update(Global.dt)
     Global.particleGroup.draw(minesweeperSurface)
+
+    playerHPText.setText(f"HP: {Global.playerHP} / {Global.playerMaxHP}")
+    playerMPText.setText(f"MP: {Global.playerMP} / {Global.playerMaxMP}")
+    Global.screen.blit(playerHPText.image, playerHPText.rect)
+    Global.screen.blit(playerMPText.image, playerMPText.rect)
+
     
     
 

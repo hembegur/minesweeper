@@ -44,13 +44,13 @@ class hitbox(pygame.sprite.Sprite):
             self.lifetime -= Global.dt
             if self.lifetime <= 0:
                 self.kill()
-        if (
-            self.pos[0] < -50 or
-            self.pos[0] > Global.screenWidth + 50 or
-            self.pos[1] < -50 or
-            self.pos[1] > Global.screenHeight + 50
-        ):
-            self.kill()
+        # if (
+        #     self.pos[0] < -50 or
+        #     self.pos[0] > Global.screenWidth + 50 or
+        #     self.pos[1] < -50 or
+        #     self.pos[1] > Global.screenHeight + 50
+        # ):
+        #     self.kill()
 
     def isAlive(self):
         return self.lifetime is None or self.lifetime > 0
@@ -91,19 +91,12 @@ class Hitbox:
             False
         )
 
-        checked = set()
         for hb, others in collisions.items():
             for other in others:
                 if hb is other:
                     continue
 
-                # pair = tuple(sorted((id(hb), id(other))))
-                # if pair in checked:
-                #     continue
-                # checked.add(pair)
-
                 if hb.collide(other) and other not in hb.alreadyHit:
                     if hb.hitFunction:
                         hb.hitFunction(other)
                     hb.alreadyHit.add(other)
-                    #other.alreadyHit.add(hb)

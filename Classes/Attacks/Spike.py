@@ -8,7 +8,7 @@ def spawnSpike():
     pos = randomEdgePos(screenWidth,screenHeight)
     newSpike = Spike(
         size=pygame.Vector2(150,150),
-        speed=random.randint(50,250),
+        speed=150,
         pos=pos,
         direction=getDirection(pos, (screenWidth/2,screenHeight/2)),
         lifetime=20,
@@ -47,7 +47,7 @@ class Spike(pygame.sprite.Sprite):
             size=pygame.Vector2(60,60),
             hitFunction=hit,
             lifetime=lifetime,
-            visualize=False,
+            visualize=True,
             owner=self,
         )
 
@@ -67,6 +67,7 @@ class Spike(pygame.sprite.Sprite):
         self.lifetime -= Global.dt
         if self.lifetime <= 0:
             self.kill()
+            self.hitbox.kill()
 
         if (
             self.pos[0] < -50 or
@@ -75,21 +76,20 @@ class Spike(pygame.sprite.Sprite):
             self.pos[1] > Global.minesweeperSurfaceSize.x + 50
         ):
             self.kill()
+            self.hitbox.kill()
 
         self.particleCD1 -= Global.dt
         if self.particleCD1 <= 0:
             self.particleCD1 = 0.05
             particlePos = self.pos[0] + random.randint(-20, 20), self.pos[1] + random.randint(-20, 20)
-            color = (50,50,50,255)
-            direction = self.direction#pygame.math.Vector2(0, -1)
-            speed = random.randint(50, 100)
-            newParticel = Particle(
+            Particle(
                 groups=Global.particleGroup, 
                 pos=particlePos, 
-                color=color, 
-                direction=direction, 
-                speed=speed,
+                color=(50,50,50), 
+                direction=-self.direction, 
+                speed=random.randint(80, 150),
                 size=20,
+                fadeSpeed=400,
             )
 
         

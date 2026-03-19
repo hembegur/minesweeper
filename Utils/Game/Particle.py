@@ -9,14 +9,15 @@ class Particle(pygame.sprite.Sprite):
                  color: str,
                  direction: pygame.math.Vector2,
                  speed: int,
-                 size: int):
+                 size: int,
+                 fadeSpeed: int = 200):
         super().__init__(groups)
         self.pos = pos
         self.color = color
         self.direction = direction
         self.speed = speed
         self.alpha = 255
-        self.fade_speed = 200
+        self.fade_speed = fadeSpeed
         self.size = size
 
         self.create_surf()

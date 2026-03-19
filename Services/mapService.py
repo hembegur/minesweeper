@@ -163,16 +163,26 @@ class createMap:
             selectedTile.Text.setText("B")
         self.calculateNumbers()
 
+    #### wat reveal and bom does
+    def successfulReveal(self):
+        Global.playerMP += 1 if Global.playerMP < Global.playerMaxMP else 0
+    
+    def bombReveal(self):
+        Global.playerHP -= 10
+
     def tileReveal(self, currentTile: Tile, first: bool):
         if (currentTile.isBomb) and first and not currentTile.flagged:
             currentTile.revealed = True
             currentTile.changeColor(self.bombColor)
+            self.bombReveal()
             return
         elif currentTile.isBomb or currentTile.revealed or currentTile.flagged or currentTile.destroyed:
             return
         
         currentTile.changeColor(self.revealColor)
         currentTile.revealed = True
+        if first:
+            self.successfulReveal()
 
         if currentTile.bombCount > 0:
             return
@@ -201,8 +211,9 @@ class createMap:
         if flagCount >= currentTile.bombCount:
             for dx in (-1,0,1):
                 for dy in (-1,0,1):
-                    if (dx or dy) and 0 <= x+dx < self.rows and 0 <= y+dy < self.cols:
-                        self.tileReveal(self.tilesArray[x+dx][y+dy], True)
+                    chosenTile: Tile = self.tilesArray[x+dx][y+dy]
+                    if (dx or dy) and 0 <= x+dx < self.rows and 0 <= y+dy < self.cols and not chosenTile.revealed:
+                        self.tileReveal(chosenTile, True)
                     
     def handleClick(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:

@@ -16,3 +16,8 @@ particleGroup : pygame.sprite.Group = pygame.sprite.Group()
 
 from Utils.Game.Hitbox import Hitbox
 hitbox : Hitbox = None
+
+playerHP : int = 100
+playerMP : int = 0
+playerMaxHP : int = 100
+playerMaxMP : int = 10
